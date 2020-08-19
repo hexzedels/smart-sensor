@@ -13,13 +13,28 @@ app = Flask(__name__)
 @app.route('/shinobu', methods = ['GET'])
 def kawaii():
     return render_template("index.html")
-
+#mainblock
 @app.route('/', methods = ['GET'])
 def hello_world():
-    return '<h1 style="text-align:center;">Intellectual monitoring!</h1>' 
+    return render_template("profile.html")
+@app.route('/dat', methods = ['GET'])
+def dat():
+    return render_template("data.html")
+@app.route('/analysis', methods = ['GET'])
+def analysis():
+    return render_template("analysis.html")
+@app.route('/notifications', methods = ['GET'])
+def notifications():
+    return render_template("notifications.html")
+@app.route('/payment', methods = ['GET'])
+def payment():
+    return render_template("payment.html")
+
+
+
 @app.route('/dataformat')
 def send_to():
-    return '{"id": 0, "current": 1.5, "voltage":3.1, "temp":36, "max_current":1.2, "max_voltage":3.6, "timecode": "2020-08-14-19:48"}'
+    return '{"id": 0, "I": 1.5, "U":3.1, "P":36, "T":1.2, "I_max":3.6, "U_max":36, "timecode": "2020-08-14-19:48"}'
 @app.route('/postdata', methods = ['POST'])
 def postJSON():
     response = request.get_json(force=True)
@@ -54,10 +69,10 @@ def show_table():
         dataset.append(temp)
         
     return render_template("s_data.html",dataset = dataset)
-@app.route('/data', methods = ['GET'])
+@app.route('/time', methods = ['GET'])
 def time():
-   return(datetime.datetime.now())
+   return(datetime.datetime.now().isoformat()[:10] + '-' + datetime.datetime.now().isoformat()[11:-7])
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
-    app.config["CACHE_TYPE"] = "null"
+    #app.debug = True
     app.run(host = '0.0.0.0')

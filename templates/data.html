@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.button {
+width:300px;
+height:60px;
+background-color: #0080ff;
+border: none;
+color: black;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 24px;
+margin: 4px 2px;
+cursor: pointer;
+}
+.button1 {
+width:300px;
+height:60px;
+background-color: #ff9740;
+border: none;
+color: black;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 24px;
+margin: 4px 2px;
+cursor: pointer;
+}
+.button:focus{
+background-color:orange;
+} 
+
+</style>
+<p><img src="{{url_for('static', filename='rosseti.png')}}"><img src="{{url_for('static', filename='private.png')}}"></p>
+</head>
+<body>
+
+<p><a href="/" class="button">Профиль</a></p>
+<p><a href="{{url_for('dat')}}" class="button1">Данные</a></p>
+<p><a href="{{url_for('analysis')}}" class="button">Анализ</a></p>
+<p><a href="{{url_for('payment')}}" class="button">Оплата</a></p>
+<p><a href="{{url_for('notifications')}}" class="button">Уведомления</a></p>
+</body>
+</html>

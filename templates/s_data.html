@@ -2,11 +2,12 @@
   <thead>
     <tr style="text-align: right;">
       <th>id</th>
-      <th>current</th>
-      <th>voltage</th>
-      <th>temp</th>
-      <th>max_current</th>
-      <th>max_voltage</th>
+      <th>I</th>
+      <th>U</th>
+      <th>P</th>
+      <th>T</th>
+      <th>I_max</th>
+      <th>U_max</th>
       <th>timecode</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
       <td>{{inst[4]}}</td>
       <td>{{inst[5]}}</td>
       <td>{{inst[6]}}</td>
+      <td>{{inst[7]}}</td>
     </tr>
  {% endfor%}   
 </tbody>

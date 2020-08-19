@@ -1,1 +1,2 @@
-id,current,voltage,temp,max_current,max_voltage,timecode
+id,I,U,P,T,I_max,U_max,timecode
+0,1.5,3.1,36,1.2,3.6,36,2020-08-14-19:48
