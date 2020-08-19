@@ -19,7 +19,14 @@ def hello_world():
     return render_template("profile.html")
 @app.route('/dat', methods = ['GET'])
 def dat():
-    return render_template("data.html")
+    data = pd.read_csv('s_data.csv')
+    dataset = []
+    for i in range(len(data)):
+        temp = []
+        for x in data.iloc[i]:
+            temp.append(x)
+        dataset.append(temp)
+    return render_template("data.html",dataset = dataset)
 @app.route('/analysis', methods = ['GET'])
 def analysis():
     return render_template("analysis.html")

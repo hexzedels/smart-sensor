@@ -33,16 +33,65 @@ cursor: pointer;
 .button:focus{
 background-color:orange;
 } 
+    #left {
+      width: 400px;
+      float: left;
+    }
+    #right {
+      margin-left: 400px;
+      /* Change this to whatever the width of your left column is*/
+    }
+    .clear {
+      clear: both;
+    }
 
 </style>
 <p><img src="{{url_for('static', filename='rosseti.png')}}"><img src="{{url_for('static', filename='private.png')}}"></p>
 </head>
 <body>
-
-<p><a href="/" class="button">Профиль</a></p>
+<div id="container">
+    <div id="left">
+      <p><a href="/" class="button">Профиль</a></p>
 <p><a href="{{url_for('dat')}}" class="button1">Данные</a></p>
 <p><a href="{{url_for('analysis')}}" class="button">Анализ</a></p>
 <p><a href="{{url_for('payment')}}" class="button">Оплата</a></p>
 <p><a href="{{url_for('notifications')}}" class="button">Уведомления</a></p>
+    </div>
+    <div id="right">
+      <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>id</th>
+      <th>I</th>
+      <th>U</th>
+      <th>P</th>
+      <th>T</th>
+      <th>I_max</th>
+      <th>U_max</th>
+      <th>timecode</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for inst in dataset %}
+    <tr>
+      <td>{{inst[0]}}</td>
+      <td>{{inst[1]}}</td>
+      <td>{{inst[2]}}</td>
+      <td>{{inst[3]}}</td>
+      <td>{{inst[4]}}</td>
+      <td>{{inst[5]}}</td>
+      <td>{{inst[6]}}</td>
+      <td>{{inst[7]}}</td>
+    </tr>
+ {% endfor%}   
+</tbody>
+
+</table>
+
+    </div>
+    <div class="clear"></div>
+  </div>
+
 </body>
 </html>
