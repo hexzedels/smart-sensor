@@ -1,0 +1,28 @@
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>id</th>
+      <th>current</th>
+      <th>voltage</th>
+      <th>temp</th>
+      <th>max_current</th>
+      <th>max_voltage</th>
+      <th>timecode</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for inst in dataset %}
+    <tr>
+      <td>{{inst[0]}}</td>
+      <td>{{inst[1]}}</td>
+      <td>{{inst[2]}}</td>
+      <td>{{inst[3]}}</td>
+      <td>{{inst[4]}}</td>
+      <td>{{inst[5]}}</td>
+      <td>{{inst[6]}}</td>
+    </tr>
+ {% endfor%}   
+</tbody>
+
+</table>
