@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src= "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
 <style>
 .button {
 width:300px;
@@ -32,19 +35,95 @@ cursor: pointer;
 }
 .button:focus{
 background-color:orange;
-} 
 
+} 
+    #left {
+      width: 400px;
+      float: left;
+    }
+    #right {
+      margin-left: 400px;
+      /* Change this to whatever the width of your left column is*/
+    }
+    .clear {
+      clear: both;
+    }
 </style>
 <p><img src="{{url_for('static', filename='rosseti.png')}}"><img src="{{url_for('static', filename='private.png')}}"></p>
 </head>
 <body>
+    <div id="left">
 
-
-<p><a href="/" class="button">Профиль</a></p>
-<p><a href="{{url_for('dat')}}" class="button">Данные</a></p>
-<p><a href="{{url_for('analysis')}}" class="button1">Анализ</a></p>
-<p><a href="{{url_for('payment')}}" class="button">Оплата</a></p>
-<p><a href="{{url_for('notifications')}}" class="button">Уведомления</a></p>
-
+        <p><a href="/" class="button">Профиль</a></p>
+        <p><a href="{{url_for('dat')}}" class="button">Данные</a></p>
+        <p><a href="{{url_for('analysis')}}" class="button1">Анализ</a></p>
+        <p><a href="{{url_for('payment')}}" class="button">Оплата</a></p>
+        <p><a href="{{url_for('notifications')}}" class="button">Уведомления</a></p>
+    </div>
+    <div id="right">
+    <div class='container'>
+			<form>
+<!-- change hardcode on Jinja -->
+  <label for=proglang>Выберите адрес:</label>
+  <select name="region">
+    <option value="default">Регион</option>
+    <option value="777">Москва и МО</option>
+    <option value="47">Ленинградская обл.</option>
+    <option value="25">Приморский край</option>
+  </select>
+  <select name="city">
+    <option value="default">Город</option>
+    <option value="msk">Москва</option>
+    <option value="spb">Санкт-Петербург</option>
+    <option value="vlc">Владивосток</option>
+  </select>
+  <select name="street">
+    <option value="default">Улица</option>
+    <option value="lenin">Пр-т Ленина</option>
+    <option value="soviet">Советская</option>
+    <option value="may">Первомайская</option>
+  </select>
+  <select name="building">
+    <option value="default">Дом</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+  <select name="flat">
+    <option value="default">Квартира</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+  <br><br>
+  
+    <label for=proglang>Выберите время:</label>
+  <select name="year">
+    <option value="default">Год</option>
+    <option value="2020">2020</option>
+    <option value="2019">2019</option>
+    <option value="2018">2018</option>
+  </select>
+  <select name="month">
+    <option value="default">Месяц</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+  </select>
+  <select name="day">
+    <option value="default">День</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+  </select>
+  <br><br>
+				<a href=# id=process_input><button class='btn btn-default'>Показать</button></a>
+			</form>
+<canvas id="canvas"></canvas>
+		</div>
+    </div>
+        <div class="clear"></div>
+ <script src="/static/plot.js"></script>	<!-- Running script at the and of the body
+ to get canvas context-->   
 </body>
 </html>

@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for
-from flask import request
+from flask import Flask, render_template, url_for, request, jsonify
 import matplotlib.pyplot as plt
 import io
 import base64
@@ -64,7 +63,7 @@ def build_plot():
     
     plot_url = base64.b64encode(img.getvalue()).decode()
 
-    return '<img src="data:image/png;base64,{}">'.format(plot_url)
+    return '<img src="data:imy/png;base64,{}">'.format(plot_url)
 @app.route('/data', methods = ['GET'])
 def show_table():
     data = pd.read_csv('s_data.csv')
@@ -76,6 +75,63 @@ def show_table():
         dataset.append(temp)
         
     return render_template("s_data.html",dataset = dataset)
+
+@app.route('/background_plot')#This page accessable only for js script
+def background_process():
+    #I'm really sorry for hardcode
+    data_msk =  {
+   "jsonarray": [{
+      "xs": "2020-02-03",
+      "ys": 12
+   }, {
+      "xs": "2020-02-04",
+      "ys": 7
+   },{
+      "xs": "2020-02-05",
+      "ys": 15
+   },{
+      "xs": "2020-02-05",
+      "ys": 9
+   }]
+};
+    data_spb =  {
+   "jsonarray": [{
+      "xs": "2020-02-03",
+      "ys": 5
+   }, {
+      "xs": "2020-02-04",
+      "ys": 25
+   },{
+      "xs": "2020-02-05",
+      "ys": 10
+   },{
+      "xs": "2020-02-05",
+      "ys": 4
+   }]
+};
+    data_vlc =  {
+   "jsonarray": [{
+      "xs": "2020-02-03",
+      "ys": 20
+   }, {
+      "xs": "2020-02-04",
+      "ys": 8
+   },{
+      "xs": "2020-02-05",
+      "ys": 12
+   },{
+      "xs": "2020-02-05",
+      "ys": 9
+   }]
+};      
+    answ = request.args.get('region', 0, type= str)
+    if answ == '777':
+        return jsonify(data_msk)
+    elif answ == '25':
+        return jsonify(data_vlc)
+    else:
+        return jsonify(data_spb)
+    
 @app.route('/time', methods = ['GET'])
 def time():
    return(datetime.datetime.now().isoformat()[:10] + '-' + datetime.datetime.now().isoformat()[11:-7])
