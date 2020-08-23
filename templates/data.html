@@ -1,63 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-.button {
-width:300px;
-height:60px;
-background-color: #0080ff;
-border: none;
-color: black;
-padding: 15px 32px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-font-size: 24px;
-margin: 4px 2px;
-cursor: pointer;
-}
-.button1 {
-width:300px;
-height:60px;
-background-color: #ff9740;
-border: none;
-color: black;
-padding: 15px 32px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-font-size: 24px;
-margin: 4px 2px;
-cursor: pointer;
-}
-.button:focus{
-background-color:orange;
-} 
-    #left {
-      width: 400px;
-      float: left;
-    }
-    #right {
-      margin-left: 400px;
-      /* Change this to whatever the width of your left column is*/
-    }
-    .clear {
-      clear: both;
-    }
-
-</style>
-<p><img src="{{url_for('static', filename='rosseti.png')}}"><img src="{{url_for('static', filename='private.png')}}"></p>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="static/CSS/main.css">
 </head>
 <body>
-<div id="container">
-    <div id="left">
-      <p><a href="/" class="button">Профиль</a></p>
-<p><a href="{{url_for('dat')}}" class="button1">Данные</a></p>
-<p><a href="{{url_for('analysis')}}" class="button">Анализ</a></p>
-<p><a href="{{url_for('payment')}}" class="button">Оплата</a></p>
-<p><a href="{{url_for('notifications')}}" class="button">Уведомления</a></p>
-    </div>
-    <div id="right">
+<div class="header">
+  <img class= "png"src="{{url_for('static', filename='Rosseti_white.png')}}"><h1>Личный кабинет</h1>
+</div>
+
+<div class="row">
+  <div class="col-1 menu">
+    <ul>
+    <li><a href= "{{url_for('profile')}}" class="button">Профиль</a></li>
+    <li><c href= "{{url_for('data')}}" class="button">Данные</c></li>
+    <li><a href= "{{url_for('analysis')}}" class="button">Анализ</a></li>
+    <li><a href= "{{url_for('payment')}}" class="button">Оплата</a></li>
+    <li><a href= "{{url_for('notifications')}}" class="button">Уведомления</a></li>
+    </ul>
+  </div>
+  <div class="col-2">
       <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -89,9 +51,7 @@ background-color:orange;
 
 </table>
 
-    </div>
-    <div class="clear"></div>
-  </div>
-
+</div>
+</div>
 </body>
 </html>

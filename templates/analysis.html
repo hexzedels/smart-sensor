@@ -3,127 +3,82 @@
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src= "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-
-<style>
-.button {
-width:300px;
-height:60px;
-background-color: #0080ff;
-border: none;
-color: black;
-padding: 15px 32px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-font-size: 24px;
-margin: 4px 2px;
-cursor: pointer;
-}
-.button1 {
-width:300px;
-height:60px;
-background-color: #ff9740;
-border: none;
-color: black;
-padding: 15px 32px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-font-size: 24px;
-margin: 4px 2px;
-cursor: pointer;
-}
-.button:focus{
-background-color:orange;
-
-} 
-    #left {
-      width: 400px;
-      float: left;
-    }
-    #right {
-      margin-left: 400px;
-      /* Change this to whatever the width of your left column is*/
-    }
-    .clear {
-      clear: both;
-    }
-</style>
-<p><img src="{{url_for('static', filename='rosseti.png')}}"><img src="{{url_for('static', filename='private.png')}}"></p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="static/CSS/main.css">
 </head>
 <body>
-    <div id="left">
+<div class="header">
+  <img class= "png"src="{{url_for('static', filename='Rosseti_white.png')}}"><h1>Личный кабинет</h1>
+</div>
 
-        <p><a href="/" class="button">Профиль</a></p>
-        <p><a href="{{url_for('dat')}}" class="button">Данные</a></p>
-        <p><a href="{{url_for('analysis')}}" class="button1">Анализ</a></p>
-        <p><a href="{{url_for('payment')}}" class="button">Оплата</a></p>
-        <p><a href="{{url_for('notifications')}}" class="button">Уведомления</a></p>
-    </div>
-    <div id="right">
-    <div class='container'>
-			<form>
-<!-- change hardcode on Jinja -->
-  <label for=proglang>Выберите адрес:</label>
-  <select name="region">
+<div class="row">
+  <div class="col-1 menu">
+    <ul>
+    <li><a href= "{{url_for('profile')}}" class="button">Профиль</a></li>
+    <li><a href= "{{url_for('data')}}" class="button">Данные</a></li>
+    <li><c href= "{{url_for('analysis')}}" class="button">Анализ</c></li>
+    <li><a href= "{{url_for('payment')}}" class="button">Оплата</a></li>
+    <li><a href= "{{url_for('notifications')}}" class="button">Уведомления</a></li>
+    </ul>
+  </div>
+  <div class="col-2">
+   <label for=proglang>Выберите адрес:</label>
+  <select id="rg" name="region">
     <option value="default">Регион</option>
-    <option value="777">Москва и МО</option>
+    <option value="50">Москва и МО</option>
     <option value="47">Ленинградская обл.</option>
-    <option value="25">Приморский край</option>
+    <option value="16">Республика Татарстан</option>
+    <option value="69">Тверская обл.</option>
+    <option value="33">Владимирская обл.</option>
   </select>
-  <select name="city">
+<script src="/static/JS/select.js"></script>
+  <select id="city" name="city">
     <option value="default">Город</option>
-    <option value="msk">Москва</option>
-    <option value="spb">Санкт-Петербург</option>
-    <option value="vlc">Владивосток</option>
   </select>
   <select name="street">
     <option value="default">Улица</option>
-    <option value="lenin">Пр-т Ленина</option>
-    <option value="soviet">Советская</option>
-    <option value="may">Первомайская</option>
+    {% for inst in data[0] %}
+    <option value="default">{{inst}}</option>
+    {% endfor%}  
   </select>
   <select name="building">
     <option value="default">Дом</option>
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-  </select>
+    {% for inst in data[1] %}
+    <option value="default">{{inst}}</option>
+    {% endfor%}  </select>
   <select name="flat">
     <option value="default">Квартира</option>
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-  </select>
+    {% for inst in data[2] %}
+    <option value="default">{{inst}}</option>
+    {% endfor%}  </select>
   <br><br>
-  
-    <label for=proglang>Выберите время:</label>
-  <select name="year">
-    <option value="default">Год</option>
-    <option value="2020">2020</option>
-    <option value="2019">2019</option>
-    <option value="2018">2018</option>
-  </select>
-  <select name="month">
-    <option value="default">Месяц</option>
-    <option value="01">01</option>
-    <option value="02">02</option>
-    <option value="03">03</option>
-  </select>
-  <select name="day">
-    <option value="default">День</option>
-    <option value="01">01</option>
-    <option value="02">02</option>
-    <option value="03">03</option>
-  </select>
-  <br><br>
-				<a href=# id=process_input><button class='btn btn-default'>Показать</button></a>
-			</form>
+  <label for=proglang>Начало:</label>
+  <input type="text" name="flatpick" id="flatpickr"></input>
+  <label for=proglang>Конец:</label>
+  <input type="text" name="flatpick1" id="flatpickr1"></input>
+    <br><br>
+    <form>
+  	<a href=# id=process_input style="text-decoration:none;"><button class="other_buttons">Показать</button></a>
+	</form>
 <canvas id="canvas"></canvas>
-		</div>
-    </div>
-        <div class="clear"></div>
- <script src="/static/plot.js"></script>	<!-- Running script at the and of the body
- to get canvas context-->   
+</div>
+</div>
+<script>
+calendar = flatpickr('#flatpickr', {
+    enableTime: true,
+    dateFormat: "Y-m-d-H:i",
+    locale: "ru",
+});
+calendar1 = flatpickr('#flatpickr1', {
+    enableTime: true,
+    dateFormat: "Y-m-d-H:i",
+    locale: "ru",
+});
+</script>
+
+ <script src="/static/JS/plot.js"></script>
 </body>
 </html>

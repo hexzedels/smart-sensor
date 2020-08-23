@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+[class*="col-"] {
+  float: left;
+  padding: 15px;
+}
+
+html {
+  font-family: "Lucida Sans", sans-serif;
+}
+
+.header {
+  background-color: #0080ff;
+  color: #ffffff;
+  padding: 15px;
+  text-align: center;
+  float: left;
+}
+.header .png{
+  width:25%;
+  float: left;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align:center;
+}
+
+.menu li {
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #0080ff;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  text-decoration: none;
+}
+
+.menu li:hover {
+  background-color: #0061c2;
+}
+.menu li c {
+  font-weight: bold;
+}
+
+
+.aside {
+  background-color: #33b5e5;
+  padding: 15px;
+  color: #ffffff;
+  text-align: center;
+  font-size: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.footer {
+  background-color: #0099cc;
+  color: #ffffff;
+  text-align: center;
+  font-size: 12px;
+  padding: 15px;
+}
+
+/* For desktop: */
+.col-1 {width: 20%;}
+.col-2 {width: 80%;}
+
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  [class*="col-"] {
+    width: 100%;
+  }
+  .header {
+  background-color: #0080ff;
+  color: #ffffff;
+  padding: 15px;
+  text-align: center;
+  float: top;
+}
+.header .png{
+  width:100%;
+  float: top;
+}
+}
+.button {
+color:white;
+border: none;
+text-decoration: none;
+cursor: pointer;
+display: block;
+}
+.other_buttons {
+color:white;
+border: none;
+text-decoration: none;
+cursor: pointer;
+display: block;
+background-color: #0080ff;
+padding: 10px;
+align-items: center;
+justify-content: center;
+}
+#canvas{ 
+  width: 100%;
+}

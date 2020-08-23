@@ -1,4 +1,15 @@
 import pandas as pd
+
+regions_cities = {
+    0: ['Город'],
+    50: ['Москва', 'Долгопрудный', 'Подольск', 'Химки', 'Люберцы'],
+    47: ['Санкт-Петербург', 'Кудрово', 'Выборг', 'Гатчина', 'Всеволжск'],
+    16: ['Казань', 'Тетюши', 'Елабуга', 'Нижнекамск', 'Набережные Челны'],
+    69: ['Тверь', 'Калязин', 'Ржев', 'Осташков', 'Торжок'],
+    33: ['Владимир', 'Ковров', 'Муром', 'Суздаль', 'Гороховец']
+}  
+streets = ['Ул. Ладожская', 'Ул. Чкалова', 'Ул. Бабаевская', 'Ул. Есенина', 'Ул. Речников']
+data_to_analysis = [streets,[i for i in range(1,6)], [i for i in range(1,11)]]
 def data_add(data, response): # Accepts pandas-loaded csv table and formated json response
     temp_data = pd.DataFrame(columns=data.columns)
     for name in temp_data.columns:
@@ -20,3 +31,4 @@ def html_update(response):
     f= open("templates/s_data.html","w+")
     f.write(strs)
     f.close()
+

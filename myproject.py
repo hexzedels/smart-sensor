@@ -14,10 +14,10 @@ def kawaii():
     return render_template("index.html")
 #mainblock
 @app.route('/', methods = ['GET'])
-def hello_world():
+def profile():
     return render_template("profile.html")
-@app.route('/dat', methods = ['GET'])
-def dat():
+@app.route('/data', methods = ['GET'])
+def data():
     data = pd.read_csv('s_data.csv')
     dataset = []
     for i in range(len(data)):
@@ -28,7 +28,9 @@ def dat():
     return render_template("data.html",dataset = dataset)
 @app.route('/analysis', methods = ['GET'])
 def analysis():
-    return render_template("analysis.html")
+    data = dt.data_to_analysis
+    return render_template("analysis.html",data = data)
+    
 @app.route('/notifications', methods = ['GET'])
 def notifications():
     return render_template("notifications.html")
@@ -64,7 +66,7 @@ def build_plot():
     plot_url = base64.b64encode(img.getvalue()).decode()
 
     return '<img src="data:imy/png;base64,{}">'.format(plot_url)
-@app.route('/data', methods = ['GET'])
+@app.route('/dat', methods = ['GET'])
 def show_table():
     data = pd.read_csv('s_data.csv')
     dataset = []
@@ -78,64 +80,35 @@ def show_table():
 
 @app.route('/background_plot')#This page accessable only for js script
 def background_process():
-    #I'm really sorry for hardcode
-    data_msk =  {
-   "jsonarray": [{
-      "xs": "2020-02-03",
-      "ys": 12
-   }, {
-      "xs": "2020-02-04",
-      "ys": 7
-   },{
-      "xs": "2020-02-05",
-      "ys": 15
-   },{
-      "xs": "2020-02-05",
-      "ys": 9
-   }]
-};
-    data_spb =  {
-   "jsonarray": [{
-      "xs": "2020-02-03",
-      "ys": 5
-   }, {
-      "xs": "2020-02-04",
-      "ys": 25
-   },{
-      "xs": "2020-02-05",
-      "ys": 10
-   },{
-      "xs": "2020-02-05",
-      "ys": 4
-   }]
-};
-    data_vlc =  {
-   "jsonarray": [{
-      "xs": "2020-02-03",
-      "ys": 20
-   }, {
-      "xs": "2020-02-04",
-      "ys": 8
-   },{
-      "xs": "2020-02-05",
-      "ys": 12
-   },{
-      "xs": "2020-02-05",
-      "ys": 9
-   }]
-};      
-    answ = request.args.get('region', 0, type= str)
-    if answ == '777':
+    #Plotting is not working yet
+    date_start = request.args.get('date_start', 0, type= str)
+    date_end = request.args.get('date_end', 0, type= str)
+    region = request.args.get('region', 0, type= str)
+    
+    if region == '50':
         return jsonify(data_msk)
-    elif answ == '25':
+    elif region == '33':
         return jsonify(data_vlc)
     else:
         return jsonify(data_spb)
-    
+
+@app.route('/background_select', methods = ['GET'])
+def select():   
+    regions_cities = dt.regions_cities
+    region = request.args.get('region', 0, type= int)
+    if region == 0:
+        data = regions_cities[region]
+        app.logger.info(region)
+        return jsonify(city = data)
+    else:
+        data = regions_cities[region]
+        app.logger.info(jsonify(city = data))
+        return jsonify(city = data)
+
 @app.route('/time', methods = ['GET'])
 def time():
    return(datetime.datetime.now().isoformat()[:10] + '-' + datetime.datetime.now().isoformat()[11:-7])
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
-    #app.debug = True
+    app.debug = True
     app.run(host = '0.0.0.0')
