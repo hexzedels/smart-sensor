@@ -50,6 +50,12 @@ Next function gets json from /background_plot node as a reply on sent params
 				$.getJSON('/background_plot', {
 				  region: $('select[name="region"]').val(),
 				  city: $('select[name="city"]').val(),
+				  street: $('select[name="street"]').val(),
+				  building: $('select[name="building"]').val(),
+				  flat: $('select[name="flat"]').val(),
+				  dep: $('select[name="dep"]').val(),
+				  date_start: $('input[name="flatpick"]').val(),
+				  date_end: $('input[name="flatpick1"]').val(),
 				}, function(data) {
 				  var jsonfile; // variable for json 
 				  jsonfile = data;

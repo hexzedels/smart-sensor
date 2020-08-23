@@ -1,12 +1,13 @@
 import pandas as pd
-
+data = pd.read_csv('./csv/dataset.csv')
+data_reg = pd.read_csv('./csv/Id_and_address.csv')
 regions_cities = {
     0: ['Город'],
-    50: ['Москва', 'Долгопрудный', 'Подольск', 'Химки', 'Люберцы'],
-    47: ['Санкт-Петербург', 'Кудрово', 'Выборг', 'Гатчина', 'Всеволжск'],
-    16: ['Казань', 'Тетюши', 'Елабуга', 'Нижнекамск', 'Набережные Челны'],
-    69: ['Тверь', 'Калязин', 'Ржев', 'Осташков', 'Торжок'],
-    33: ['Владимир', 'Ковров', 'Муром', 'Суздаль', 'Гороховец']
+    50: ['Город','Москва', 'Долгопрудный', 'Подольск', 'Химки', 'Люберцы'],
+    47: ['Город','Санкт-Петербург', 'Кудрово', 'Выборг', 'Гатчина', 'Всеволжск'],
+    16: ['Город','Казань', 'Тетюши', 'Елабуга', 'Нижнекамск', 'Набережные Челны'],
+    69: ['Город','Тверь', 'Калязин', 'Ржев', 'Осташков', 'Торжок'],
+    33: ['Город','Владимир', 'Ковров', 'Муром', 'Суздаль', 'Гороховец']
 }  
 streets = ['Ул. Ладожская', 'Ул. Чкалова', 'Ул. Бабаевская', 'Ул. Есенина', 'Ул. Речников']
 data_to_analysis = [streets,[i for i in range(1,6)], [i for i in range(1,11)]]
@@ -31,4 +32,52 @@ def html_update(response):
     f= open("templates/s_data.html","w+")
     f.write(strs)
     f.close()
+    
+ #dataset related functions   
+def get_id(region,city,street,building,flat):
+    col = data_reg.columns #get column names
+    return data_reg[(data_reg[col[1]] == region) & (data_reg[col[2]] == city) & (data_reg[col[3]] == street) & (data_reg[col[4]] == building)&(data_reg[col[5]] == flat)].iloc[0][0]
 
+'''
+dependepcy codes are in table below
+1: I(time)
+2: U(time)
+3: P(time)
+4: T(time)
+5: I_max(time)
+6: U_max(time)
+'''
+def get_plot_data(time_start,time_end,x,dep_code):
+    temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id
+    outer_json =  {
+   "jsonarray": []
+    };     
+
+    for i in range(len(temp_time)):
+        inner_json = {
+          "xs": "2020-02-03",
+          "ys": 20
+        }
+        temp = temp_time.iloc[i]
+        inner_json['xs'] = str(temp[7])#hardcoded time
+        inner_json['ys'] = int(temp[dep_code])
+        outer_json['jsonarray'].append(inner_json)
+    return outer_json
+
+
+# for data.html visualisation
+def get_data(time_start,time_end,x,dep_code):
+    temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id
+    outer_json =  {
+   "jsonarray": []
+    };     
+
+    for i in range(len(temp_time)):
+        inner_json = {"id": 0, "I": 1.5, "U":3.1, "P":36, "T":1.2, "I_max":3.6, "U_max":36, "timecode": "2020-08-14-19:48"}
+        temp = temp_time.iloc[i]
+        col = temp_time.columns
+        for j in range(len(temp_time.columns)-1):
+            inner_json[col[j]] = int(temp[j])
+        inner_json[col[7]] = str(temp[7])
+        outer_json['jsonarray'].append(inner_json)
+    return outer_json

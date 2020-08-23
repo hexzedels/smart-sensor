@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src= "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://unpkg.com/tabulator-tables@4.7.2/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.7.2/dist/js/tabulator.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/CSS/main.css">
 </head>
 <body>
 <div class="header">
-  <img class= "png"src="{{url_for('static', filename='Rosseti_white.png')}}"><h1>Личный кабинет</h1>
+  <img class= "png" src="{{url_for('static', filename='Rosseti_white.png')}}"><h1>Личный кабинет</h1>
 </div>
 
 <div class="row">
@@ -20,37 +27,68 @@
     </ul>
   </div>
   <div class="col-2">
-      <table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>id</th>
-      <th>I</th>
-      <th>U</th>
-      <th>P</th>
-      <th>T</th>
-      <th>I_max</th>
-      <th>U_max</th>
-      <th>timecode</th>
-    </tr>
-  </thead>
+  <div class="rectangle">
+     <label for=proglang>Выберите адрес:</label>
+  <select id="rg" name="region">
+    <option value="default">Регион</option>
+    <option value="50">Москва и МО</option>
+    <option value="47">Ленинградская обл.</option>
+    <option value="16">Республика Татарстан</option>
+    <option value="69">Тверская обл.</option>
+    <option value="33">Владимирская обл.</option>
+  </select>
+<script src="/static/JS/select.js"></script>
+  <select id="city" name="city">
+    <option value="default">Город</option>
+  </select>
+  <select name="street">
+    <option value="default">Улица</option>
+    {% for inst in data[0] %}
+    <option value="{{inst}}">{{inst}}</option>
+    {% endfor%}  
+  </select>
+  <select name="building">
+    <option value="default">Дом</option>
+    {% for inst in data[1] %}
+    <option value="{{inst}}">{{inst}}</option>
+    {% endfor%}  </select>
+  <select name="flat">
+    <option value="default">Квартира</option>
+    {% for inst in data[2] %}
+    <option value="{{inst}}">{{inst}}</option>
+    {% endfor%}  </select>
+  <br><br>
+  <label for=proglang>Начало:</label>
+  <input type="text" name="flatpick" id="flatpickr"></input>
+  
+  <label for=proglang>Конец:</label>
+  <input type="text" name="flatpick1" id="flatpickr1"></input>
+</div>
+    <br><br>
+    <form>
+  	<a href=# id=process_input style="text-decoration:none;"><button class="other_buttons">Показать</button></a>
+	</form>
+	<br><br>
 
-  <tbody>
-    {% for inst in dataset %}
-    <tr>
-      <td>{{inst[0]}}</td>
-      <td>{{inst[1]}}</td>
-      <td>{{inst[2]}}</td>
-      <td>{{inst[3]}}</td>
-      <td>{{inst[4]}}</td>
-      <td>{{inst[5]}}</td>
-      <td>{{inst[6]}}</td>
-      <td>{{inst[7]}}</td>
-    </tr>
- {% endfor%}   
-</tbody>
+<div id="example-table"></div>
 
-</table>
-
+<script src="/static/JS/data.js"></script>
+<script>
+calendar = flatpickr('#flatpickr', {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    locale: "ru",
+    minDate: "2020-08-22",
+    maxDate: "2020-08-25",
+});
+calendar1 = flatpickr('#flatpickr1', {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    locale: "ru",
+    minDate: "2020-08-22",
+    maxDate: "2020-08-25",
+});
+</script>
 </div>
 </div>
 </body>

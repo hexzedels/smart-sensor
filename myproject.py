@@ -25,11 +25,12 @@ def data():
         for x in data.iloc[i]:
             temp.append(x)
         dataset.append(temp)
-    return render_template("data.html",dataset = dataset)
+    dataset2 = dt.data_to_analysis
+    return render_template("data.html",dataset = dataset,data=dataset2)
 @app.route('/analysis', methods = ['GET'])
 def analysis():
-    data = dt.data_to_analysis
-    return render_template("analysis.html",data = data)
+    dataset = dt.data_to_analysis
+    return render_template("analysis.html",data = dataset)
     
 @app.route('/notifications', methods = ['GET'])
 def notifications():
@@ -80,30 +81,40 @@ def show_table():
 
 @app.route('/background_plot')#This page accessable only for js script
 def background_process():
-    #Plotting is not working yet
     date_start = request.args.get('date_start', 0, type= str)
     date_end = request.args.get('date_end', 0, type= str)
-    region = request.args.get('region', 0, type= str)
-    
-    if region == '50':
-        return jsonify(data_msk)
-    elif region == '33':
-        return jsonify(data_vlc)
-    else:
-        return jsonify(data_spb)
+    region = request.args.get('region', 0, type= int)
+    city = request.args.get('city', 0, type= str)
+    street = request.args.get('street', 0, type= str)
+    building = request.args.get('building', 0, type= int)
+    flat = request.args.get('flat', 0, type= int)
+    dep = int(request.args.get('dep', 0, type= int))
+    id_req = dt.get_id(region, city, street, building, flat)
+    return jsonify(dt.get_plot_data(date_start,date_end,id_req,dep))
 
 @app.route('/background_select', methods = ['GET'])
 def select():   
     regions_cities = dt.regions_cities
     region = request.args.get('region', 0, type= int)
     if region == 0:
-        data = regions_cities[region]
-        app.logger.info(region)
+        cities = regions_cities[region]
         return jsonify(city = data)
     else:
-        data = regions_cities[region]
-        app.logger.info(jsonify(city = data))
-        return jsonify(city = data)
+        cities = regions_cities[region]
+        return jsonify(city = cities)
+    
+@app.route('/background_data', methods = ['GET'])
+def bg_data():   
+    date_start = request.args.get('date_start', 0, type= str)
+    date_end = request.args.get('date_end', 0, type= str)
+    region = request.args.get('region', 0, type= int)
+    city = request.args.get('city', 0, type= str)
+    street = request.args.get('street', 0, type= str)
+    building = request.args.get('building', 0, type= int)
+    flat = request.args.get('flat', 0, type= int)
+    
+    id_req = dt.get_id(region, city, street, building, flat)
+    return jsonify(dt.get_data(date_start,date_end,id_req,1))
 
 @app.route('/time', methods = ['GET'])
 def time():

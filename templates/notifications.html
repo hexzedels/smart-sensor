@@ -3,6 +3,17 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="static/CSS/main.css">
+<style>
+.rectangle{
+    background-color: #0080ff;
+    padding: 15px;
+    width: 100%;
+    color: #ffffff;
+}
+.rectangle:hover {
+    background-color: #0061c2;
+}
+</style>
 </head>
 <body>
 <div class="header">
@@ -15,11 +26,15 @@
     <li><a href= "{{url_for('profile')}}" class="button">Профиль</a></li>
     <li><a href= "{{url_for('data')}}" class="button">Данные</a></li>
     <li><a href= "{{url_for('analysis')}}" class="button">Анализ</a></li>
-    <li><c href= "{{url_for('payment')}}" class="button">Оплата</c></li>
-    <li><a href= "{{url_for('notifications')}}" class="button">Уведомления</a></li>
+    <li><a href= "{{url_for('payment')}}" class="button">Оплата</a></li>
+    <li><c href= "{{url_for('notifications')}}" class="button">Уведомления</c></li>
     </ul>
   </div>
   <div class="col-2">
+  <div class="rectangle">
+    <b>Внимание!</b>
+    <p>32.13.2020 с 9:00 до 12:00 в Вашем доме будет отключено электроснабжение из-за работ на подстанции "Х". Будьте внимательны! Приносим извинения за временные неудобства!</p>
+   </div>
 </div>
 </div>
 </body>
