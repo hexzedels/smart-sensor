@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-data_reg = pd.read_csv('./csv/Id_and_address.csv')
+data_reg = pd.read_csv('csv/Id_and_address.csv')
 regions_cities = {
     0: ['Город'],
     50: ['Город','Москва', 'Долгопрудный', 'Подольск', 'Химки', 'Люберцы'],
@@ -39,7 +39,7 @@ def get_id(region,city,street,building,flat):
     return data_reg[(data_reg[col[1]] == region) & (data_reg[col[2]] == city) & (data_reg[col[3]] == street) & (data_reg[col[4]] == building)&(data_reg[col[5]] == flat)].iloc[0][0]
 
 def load_id(x):
-    data = pd.read_csv('./csv/main/{}.csv'.format(x))
+    data = pd.read_csv('csv/main/{}.csv'.format(x))
     return data
 '''
 dependepcy codes are in table below
