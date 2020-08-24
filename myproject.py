@@ -90,7 +90,13 @@ def background_process():
     flat = request.args.get('flat', 0, type= int)
     dep = int(request.args.get('dep', 0, type= int))
     id_req = dt.get_id(region, city, street, building, flat)
-    return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
+    typee = request.args.get('typee', 0, type= int)
+    app.logger.info(typee)
+    if typee == 2:
+        return jsonify(dt.get_mean(dt.load_id(id_req),id_req,dep))
+    else:
+        return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
+    #return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
 
 @app.route('/background_select', methods = ['GET'])
 def select():   

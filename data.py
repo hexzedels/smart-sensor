@@ -1,5 +1,5 @@
 import pandas as pd
-#data = pd.read_csv('./csv/dataset.csv')
+import numpy as np
 data_reg = pd.read_csv('./csv/Id_and_address.csv')
 regions_cities = {
     0: ['Город'],
@@ -50,10 +50,18 @@ dependepcy codes are in table below
 5: I_max(time)
 6: U_max(time)
 '''
-def get_plot_data(data, time_start,time_end,x,dep_code):
-    temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id
+code_to_labels = {1:['Сила тока','I, A'],
+                  2:["Напряжение",'U, В'],
+                  3:['Потребление','P, КВт*час'],
+                  4:['Температура','T, °С'],
+                  5:['Max сила тока','I_max, A'],
+                  6:['Max напряжение','U_max, В'],
+                 }
+def get_plot_data(data,time_start,time_end,x,dep_code):
+    temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id  
     outer_json =  {
-   "jsonarray": []
+   "jsonarray": [],
+    "labelarray":{"label":'',"labelString":''}
     };     
 
     for i in range(len(temp_time)):
@@ -65,6 +73,9 @@ def get_plot_data(data, time_start,time_end,x,dep_code):
         inner_json['xs'] = str(temp[7])#hardcoded time
         inner_json['ys'] = int(temp[dep_code])
         outer_json['jsonarray'].append(inner_json)
+        
+    outer_json['labelarray']['label'] = code_to_labels[dep_code][0]
+    outer_json['labelarray']['labelString'] = code_to_labels[dep_code][1]
     return outer_json
 
 
@@ -83,4 +94,37 @@ def get_data(data, time_start,time_end,x,dep_code):
             inner_json[col[j]] = int(temp[j])
         inner_json[col[7]] = str(temp[7])
         outer_json['jsonarray'].append(inner_json)
+    return outer_json
+
+#Get mean value for every hour of a day
+code_to_labels2 = {1:['Суточная сила тока','I, A'],
+                  2:["Суточное напряжение",'U, В'],
+                  3:['Суточное потребление','P, КВт*час'],
+                  4:['Суточная температура','T, °С'],
+                  5:['Суточная max сила тока','I_max, A'],
+                  6:['Суточное max напряжение','U_max, В'],
+                 }
+def get_mean(data,x,dep_code):
+    outer_json =  {
+   "jsonarray": [],
+    "labelarray":{"label":'',"labelString":''}
+    };     
+        
+    temp = data[(data['id'] ==x)]
+    temp_list = [[] for z in range(24)]
+    times = [y for y in range(24)]
+    for i in temp['timecode'].tolist():
+        temp_list[int(i[11:13])].append(temp[temp['timecode']==i].iloc[0][dep_code])
+    temp_list = [float(np.round(np.mean(temp_list[z]),3)) for z in range(len(temp_list))]
+    for i in range(len(temp_list)):
+        inner_json = {
+          "xs": "2020-02-03",
+          "ys": 20
+        }
+        inner_json['xs'] = int(times[i])
+        inner_json['ys'] = temp_list[i]
+        outer_json['jsonarray'].append(inner_json)
+
+    outer_json['labelarray']['label'] = code_to_labels2[dep_code][0]
+    outer_json['labelarray']['labelString'] = code_to_labels2[dep_code][1]
     return outer_json

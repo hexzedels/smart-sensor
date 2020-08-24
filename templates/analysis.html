@@ -35,22 +35,22 @@
     <option value="69">Тверская обл.</option>
     <option value="33">Владимирская обл.</option>
   </select>
-<script src="/static/JS/select.js"></script>
+
   <select id="city" name="city">
     <option value="default">Город</option>
   </select>
-  <select name="street">
+  <select id="street" name="street">
     <option value="default">Улица</option>
     {% for inst in data[0] %}
     <option value="{{inst}}">{{inst}}</option>
     {% endfor%}  
   </select>
-  <select name="building">
+  <select id="build" name="building">
     <option value="default">Дом</option>
     {% for inst in data[1] %}
     <option value="{{inst}}">{{inst}}</option>
     {% endfor%}  </select>
-  <select name="flat">
+  <select id="flat" name="flat">
     <option value="default">Квартира</option>
     {% for inst in data[2] %}
     <option value="{{inst}}">{{inst}}</option>
@@ -61,8 +61,12 @@
   <label for=proglang>Конец:</label>
   <input type="text" name="flatpick1" id="flatpickr1"></input>
         <br><br>
-  <label for=proglang>Зависимость:</label>
-    <select id="dep" name="dep">
+    <select style="display: none;" id="typee" name="typee">
+    <option value="1">Фактическая</option>
+    <option value="2">Суточная</option>
+  </select>
+  <label style="display: none;" id="depend" for=proglang>зависимость:</label>
+    <select style="display: none;" id="dep" name="dep">
     <option value="1">Тока</option>
     <option value="2">Напряжения</option>
     <option value="3">Потребления</option>
@@ -79,6 +83,7 @@
 <canvas id="canvas"></canvas>
 </div>
 </div>
+<script src="/static/JS/select.js"></script>
 <script>
 calendar = flatpickr('#flatpickr', {
     enableTime: true,

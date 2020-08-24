@@ -1,11 +1,11 @@
-var canvas = document.getElementById('canvas')
+			var canvas = document.getElementById('canvas')
                     var ctx = canvas.getContext('2d');
                     var config = {
                        type: 'line',
                        data: {
                           //labels: labels,
                           datasets: [{
-                             label: 'Сила тока',
+                             label: 'def',
                              //data: data,
                              backgroundColor: 'rgba(0, 0, 0, 0)',
                              lineTension: 0,
@@ -22,11 +22,11 @@ var canvas = document.getElementById('canvas')
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'I, A'
+                        labelString: 'def'
                     },
                    
                     ticks: {
-                        beginAtZero:true
+                        //beginAtZero:true
                     }
                 }],
                 xAxes: [{
@@ -44,7 +44,7 @@ var chart = new Chart(ctx, config);
 /*
 Next function gets json from /background_plot node as a reply on sent params
 */
-			$(function() { 
+$(function() { 
 			  $('a#process_input').bind('click', function() { 
 			  
 				$.getJSON('/background_plot', {
@@ -57,6 +57,10 @@ Next function gets json from /background_plot node as a reply on sent params
 				  date_start: $('input[name="flatpick"]').val(),
 				  date_end: $('input[name="flatpick1"]').val(),
 				}, function(data) {
+				  //document.getElementById("dep").style.display = "none";
+				  document.getElementById("dep").style.display = "";
+				  document.getElementById("typee").style.display = ""; 
+				  document.getElementById("depend").style.display = "";  
 				  var jsonfile; // variable for json 
 				  jsonfile = data;
                     var label = jsonfile.jsonarray.map(function(e) {
@@ -65,6 +69,8 @@ Next function gets json from /background_plot node as a reply on sent params
                     var datas = jsonfile.jsonarray.map(function(e) {
                        return e.ys;
                     });;
+                    chart.data.datasets[0].label = jsonfile.labelarray.label;
+                    chart.options.scales.yAxes[0].scaleLabel.labelString = jsonfile.labelarray.labelString;
                     chart.data.labels = label; //updating of chart labels
                     chart.data.datasets[0].data = datas; //updating of chart data
                     chart.update();
