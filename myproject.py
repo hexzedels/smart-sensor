@@ -90,7 +90,7 @@ def background_process():
     flat = request.args.get('flat', 0, type= int)
     dep = int(request.args.get('dep', 0, type= int))
     id_req = dt.get_id(region, city, street, building, flat)
-    return jsonify(dt.get_plot_data(date_start,date_end,id_req,dep))
+    return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
 
 @app.route('/background_select', methods = ['GET'])
 def select():   
@@ -114,7 +114,7 @@ def bg_data():
     flat = request.args.get('flat', 0, type= int)
     
     id_req = dt.get_id(region, city, street, building, flat)
-    return jsonify(dt.get_data(date_start,date_end,id_req,1))
+    return jsonify(dt.get_data(dt.load_id(id_req),date_start,date_end,id_req,1))
 
 @app.route('/time', methods = ['GET'])
 def time():

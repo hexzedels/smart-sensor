@@ -1,5 +1,5 @@
 import pandas as pd
-data = pd.read_csv('./csv/dataset.csv')
+#data = pd.read_csv('./csv/dataset.csv')
 data_reg = pd.read_csv('./csv/Id_and_address.csv')
 regions_cities = {
     0: ['Город'],
@@ -38,6 +38,9 @@ def get_id(region,city,street,building,flat):
     col = data_reg.columns #get column names
     return data_reg[(data_reg[col[1]] == region) & (data_reg[col[2]] == city) & (data_reg[col[3]] == street) & (data_reg[col[4]] == building)&(data_reg[col[5]] == flat)].iloc[0][0]
 
+def load_id(x):
+    data = pd.read_csv('./csv/main/{}.csv'.format(x))
+    return data
 '''
 dependepcy codes are in table below
 1: I(time)
@@ -47,7 +50,7 @@ dependepcy codes are in table below
 5: I_max(time)
 6: U_max(time)
 '''
-def get_plot_data(time_start,time_end,x,dep_code):
+def get_plot_data(data, time_start,time_end,x,dep_code):
     temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id
     outer_json =  {
    "jsonarray": []
@@ -66,7 +69,7 @@ def get_plot_data(time_start,time_end,x,dep_code):
 
 
 # for data.html visualisation
-def get_data(time_start,time_end,x,dep_code):
+def get_data(data, time_start,time_end,x,dep_code):
     temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id
     outer_json =  {
    "jsonarray": []
