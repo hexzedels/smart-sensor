@@ -28,7 +28,7 @@
   </div>
   <div class="col-2">
   <div class="rectangle">
-     <label for=proglang>Выберите адрес:</label>
+   <label for=proglang>Выберите адрес:</label>
   <select id="rg" name="region">
     <option value="default">Регион</option>
     <option value="50">Москва и МО</option>
@@ -37,21 +37,22 @@
     <option value="69">Тверская обл.</option>
     <option value="33">Владимирская обл.</option>
   </select>
-  <select id="city" name="city">
+   <script src="/static/JS/switch.js"></script>
+  <select style="display: none;" id="city" name="city">
     <option value="default">Город</option>
   </select>
-  <select name="street">
+  <select style="display: none;" id="street" name="street">
     <option value="default">Улица</option>
     {% for inst in data[0] %}
     <option value="{{inst}}">{{inst}}</option>
     {% endfor%}  
   </select>
-  <select name="building">
+  <select style="display: none;" id="building" name="building">
     <option value="default">Дом</option>
     {% for inst in data[1] %}
     <option value="{{inst}}">{{inst}}</option>
     {% endfor%}  </select>
-  <select name="flat">
+  <select style="display: none;" id="flat" name="flat">
     <option value="default">Квартира</option>
     {% for inst in data[2] %}
     <option value="{{inst}}">{{inst}}</option>
@@ -59,7 +60,6 @@
   <br><br>
   <label for=proglang>Начало:</label>
   <input type="text" name="flatpick" id="flatpickr"></input>
-  
   <label for=proglang>Конец:</label>
   <input type="text" name="flatpick1" id="flatpickr1"></input>
 </div>

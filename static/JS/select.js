@@ -5,7 +5,7 @@
                        data: {
                           //labels: labels,
                           datasets: [{
-                             label: 'def',
+                             label: 'Сила тока',
                              //data: data,
                              backgroundColor: 'rgba(0, 0, 0, 0)',
                              lineTension: 0,
@@ -22,7 +22,7 @@
                     display: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'def'
+                        labelString: 'Ток, А',
                     },
                    
                     ticks: {
@@ -36,34 +36,12 @@
                         labelString: 'Время'
                     }
                 }]
-            }
+            },
+            annotation: { }
             }
                     };
                     
 var chart = new Chart(ctx, config);
-$(function() { 
-    $('#rg').change(function() { 
-        $.getJSON('/background_select', {
-            region: $('select[name="region"]').val(),
-        },
-        function(data) {
-            var select = document.getElementById('city');
-            var array = data.city;
-            //Create and append the options
-            for (i = select.options.length-1; i >= 0; i--) {
-                select.options[i] = null;
-            }
-            for (var i = 0; i < array.length; i++) {
-                
-                var option = document.createElement("option");
-                option.value = array[i];
-                option.text = array[i];
-                select.appendChild(option);
-            }
-        });
-    });
-});
-
 function x(){
 				$.getJSON('/background_plot', {
 				  region: $('select[name="region"]').val(),
@@ -76,20 +54,34 @@ function x(){
 				  date_end: $('input[name="flatpick1"]').val(),
 				  typee: $('select[name="typee"]').val(),
 				}, function(data) {
-				  //document.getElementById("dep").style.display = "none";
-				  document.getElementById("dep").style.display = "";
-				  document.getElementById("typee").style.display = ""; 
-				  document.getElementById("depend").style.display = "";  
-				  var jsonfile; // variable for json 
-				  jsonfile = data;
+
+                    var jsonfile; // variable for json 
+				    var success = {
+                                    drawTime: "afterDraw",
+                                    annotations: [{
+                                    type: 'line',
+                                    mode: 'horizontal',
+                                    scaleID: 'y-axis-0',
+                                    value: 220,
+                                    borderColor: 'tomato',
+                                    borderWidth: 1.5,
+                                    }]
+                                  };
+                    jsonfile = data;
                     var label = jsonfile.jsonarray.map(function(e) {
                        return e.xs;
                     });
                     var datas = jsonfile.jsonarray.map(function(e) {
                        return e.ys;
                     });;
+                    if ((jsonfile.labelarray.labelString == "U, В") || (jsonfile.labelarray.labelString == "U_max, В")) {
+                        chart.options.annotation = success
+                    } else {
+                        chart.options.annotation = {}
+                    };
                     chart.data.datasets[0].label = jsonfile.labelarray.label;
                     chart.options.scales.yAxes[0].scaleLabel.labelString = jsonfile.labelarray.labelString;
+                    chart.options.scales.xAxes[0].scaleLabel.labelString = jsonfile.labelarray.xlabelString;
                     chart.data.labels = label; //updating of chart labels
                     chart.data.datasets[0].data = datas; //updating of chart data
                     chart.update();

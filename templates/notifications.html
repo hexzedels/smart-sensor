@@ -31,10 +31,15 @@
     </ul>
   </div>
   <div class="col-2">
-  <div class="rectangle">
+  <div class="rectangle" id="Rec" onclick="hide(this.id)">
     <b>Внимание!</b>
     <p>32.13.2020 с 9:00 до 12:00 в Вашем доме будет отключено электроснабжение из-за работ на подстанции "Х". Будьте внимательны! Приносим извинения за временные неудобства!</p>
    </div>
+   <script>
+function hide(id){
+    document.getElementById(id).style.display = "none";
+}
+</script>
 </div>
 </div>
 </body>

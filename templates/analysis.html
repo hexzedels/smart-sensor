@@ -3,6 +3,7 @@
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src= "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src= "//cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
@@ -35,22 +36,22 @@
     <option value="69">Тверская обл.</option>
     <option value="33">Владимирская обл.</option>
   </select>
-
-  <select id="city" name="city">
+   <script src="/static/JS/switch.js"></script>
+  <select style="display: none;" id="city" name="city">
     <option value="default">Город</option>
   </select>
-  <select id="street" name="street">
+  <select style="display: none;" id="street" name="street">
     <option value="default">Улица</option>
     {% for inst in data[0] %}
     <option value="{{inst}}">{{inst}}</option>
     {% endfor%}  
   </select>
-  <select id="build" name="building">
+  <select style="display: none;" id="building" name="building">
     <option value="default">Дом</option>
     {% for inst in data[1] %}
     <option value="{{inst}}">{{inst}}</option>
     {% endfor%}  </select>
-  <select id="flat" name="flat">
+  <select style="display: none;" id="flat" name="flat">
     <option value="default">Квартира</option>
     {% for inst in data[2] %}
     <option value="{{inst}}">{{inst}}</option>
@@ -75,7 +76,6 @@
     <option value="6">Max напряжения</option>
   </select>
   </div>
-
     <br><br>
     <form>
   	<a href=# id=process_input style="text-decoration:none;"><button class="other_buttons">Показать</button></a>
@@ -100,7 +100,6 @@ calendar1 = flatpickr('#flatpickr1', {
     maxDate: "2020-08-25",
 });
 </script>
-
- <script src="/static/JS/plot.js"></script>
+<script src="/static/JS/plot.js"></script>
 </body>
 </html>

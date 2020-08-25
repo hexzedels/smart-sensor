@@ -9,6 +9,7 @@
     padding: 15px;
     width: 100%;
     color: #ffffff;
+    display: ;
 }
 .rectangle:hover {
     background-color: #0061c2;
@@ -31,9 +32,15 @@
     </ul>
   </div>
   <div class="col-2">
-  <div class="rectangle">Оплата электроэнергии по адресу г.Москва, улица Школьная, дом 555, корпус 1, квартира 565</div>
+  <div class="rectangle" id="Rec"><a id="Pay">Оплата электроэнергии по адресу г.Москва, улица Школьная, дом 555, корпус 1, квартира 565</a></div>
 <br></br>
-<input type="button" class="other_buttons" value="Оплатить" />
+<input type="button" id="btn" class="other_buttons" value="Оплатить" onclick="hide()"/>
+<script>
+function hide(id){
+    document.getElementById("Rec").style.display = "none";
+    document.getElementById("btn").style.display = "none";
+}
+</script>
 </div>
 </div>
 </body>

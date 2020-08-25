@@ -50,19 +50,19 @@ dependepcy codes are in table below
 5: I_max(time)
 6: U_max(time)
 '''
-code_to_labels = {1:['Сила тока','I, A'],
-                  2:["Напряжение",'U, В'],
-                  3:['Потребление','P, КВт*час'],
-                  4:['Температура','T, °С'],
-                  5:['Max сила тока','I_max, A'],
-                  6:['Max напряжение','U_max, В'],
+code_to_labels = {1:['Сила тока','I, A','Дата и время'],
+                  2:["Напряжение",'U, В','Дата и время'],
+                  3:['Потребление','P, КВт*час','Дата и время'],
+                  4:['Температура','T, °С','Дата и время'],
+                  5:['Max сила тока','I_max, A','Дата и время'],
+                  6:['Max напряжение','U_max, В','Дата и время'],
                  }
 def get_plot_data(data,time_start,time_end,x,dep_code):
     temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)& (data['id']== x)]#x == id  
     outer_json =  {
    "jsonarray": [],
-    "labelarray":{"label":'',"labelString":''}
-    };     
+    "labelarray":{"label":'',"labelString":'',"xlabelString":''}
+    };       
 
     for i in range(len(temp_time)):
         inner_json = {
@@ -76,6 +76,7 @@ def get_plot_data(data,time_start,time_end,x,dep_code):
         
     outer_json['labelarray']['label'] = code_to_labels[dep_code][0]
     outer_json['labelarray']['labelString'] = code_to_labels[dep_code][1]
+    outer_json['labelarray']['xlabelString'] = code_to_labels[dep_code][2]
     return outer_json
 
 
@@ -97,17 +98,17 @@ def get_data(data, time_start,time_end,x,dep_code):
     return outer_json
 
 #Get mean value for every hour of a day
-code_to_labels2 = {1:['Суточная сила тока','I, A'],
-                  2:["Суточное напряжение",'U, В'],
-                  3:['Суточное потребление','P, КВт*час'],
-                  4:['Суточная температура','T, °С'],
-                  5:['Суточная max сила тока','I_max, A'],
-                  6:['Суточное max напряжение','U_max, В'],
+code_to_labels2 = {1:['Суточная сила тока','I, A','Время, ч'],
+                  2:["Суточное напряжение",'U, В','Время, ч'],
+                  3:['Суточное потребление','P, КВт*час','Время, ч'],
+                  4:['Суточная температура','T, °С','Время, ч'],
+                  5:['Суточная max сила тока','I_max, A','Время, ч'],
+                  6:['Суточное max напряжение','U_max, В','Время, ч'],
                  }
 def get_mean(data,x,dep_code):
     outer_json =  {
    "jsonarray": [],
-    "labelarray":{"label":'',"labelString":''}
+    "labelarray":{"label":'',"labelString":'',"xlabelString":''}
     };     
         
     temp = data[(data['id'] ==x)]
@@ -127,4 +128,5 @@ def get_mean(data,x,dep_code):
 
     outer_json['labelarray']['label'] = code_to_labels2[dep_code][0]
     outer_json['labelarray']['labelString'] = code_to_labels2[dep_code][1]
+    outer_json['labelarray']['xlabelString'] = code_to_labels2[dep_code][2]
     return outer_json
