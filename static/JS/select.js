@@ -26,7 +26,7 @@
                     },
                    
                     ticks: {
-                        //beginAtZero:true
+                        beginAtZero:true
                     }
                 }],
                 xAxes: [{
@@ -50,6 +50,7 @@ function x(){
 				  building: $('select[name="building"]').val(),
 				  flat: $('select[name="flat"]').val(),
 				  dep: $('select[name="dep"]').val(),
+				  dep_value: $('select[name="dep_value"]').val(),
 				  date_start: $('input[name="flatpick"]').val(),
 				  date_end: $('input[name="flatpick1"]').val(),
 				  typee: $('select[name="typee"]').val(),
@@ -91,5 +92,21 @@ function x(){
  x()
  });
  $('#typee').change(function() {
+ x()
+     $(function() { 
+        $('#typee').change(function() {
+           var e = document.getElementById("typee")
+           console.log(e.value)
+           if (e.value == 1) {
+               document.getElementById("dep_value").style.display = "";
+               document.getElementById("depend_val").style.display = "";
+           } else {
+               document.getElementById("dep_value").style.display = "none";
+               document.getElementById("depend_val").style.display = "none";
+           }
+        });
+    });
+ });
+ $('#dep_value').change(function() {
  x()
  });

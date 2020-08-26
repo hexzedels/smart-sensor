@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import pandas as pd
-import json
 import numpy as np
 import data as dt
 import datetime
@@ -85,17 +84,32 @@ def background_process():
     date_end = request.args.get('date_end', 0, type= str)
     region = request.args.get('region', 0, type= int)
     city = request.args.get('city', 0, type= str)
+    #app.logger.info(city)
     street = request.args.get('street', 0, type= str)
     building = request.args.get('building', 0, type= int)
     flat = request.args.get('flat', 0, type= int)
     dep = int(request.args.get('dep', 0, type= int))
-    id_req = dt.get_id(region, city, street, building, flat)
+    dep_value = int(request.args.get('dep_value', 0, type= int))
     typee = request.args.get('typee', 0, type= int)
-    app.logger.info(typee)
-    if typee == 2:
-        return jsonify(dt.get_mean(dt.load_id(id_req),id_req,dep))
+    #app.logger.info(typee)
+    if dep_value == 1:
+        id_req = dt.get_id(region, city, street, building, flat)
+        #app.logger.info(id_req)
+        return jsonify(dt.get_temperature(dt.load_id(id_req),dep))
     else:
-        return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
+        if typee == 2:
+            if city == "Город":
+                return jsonify(dt.get_mean_region(dt.load_region(region),dep))
+            else:
+                id_req = dt.get_id(region, city, street, building, flat)
+                return jsonify(dt.get_mean(dt.load_id(id_req),id_req,dep))
+        else:
+            if city == "Город":
+                return jsonify(dt.get_plot_data_region(dt.load_region(region),date_start,date_end,dep))
+            else:
+                id_req = dt.get_id(region, city, street, building, flat)
+                return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
+
     #return jsonify(dt.get_plot_data(dt.load_id(id_req),date_start,date_end,id_req,dep))
 
 @app.route('/background_select', methods = ['GET'])
@@ -119,8 +133,11 @@ def bg_data():
     building = request.args.get('building', 0, type= int)
     flat = request.args.get('flat', 0, type= int)
     
-    id_req = dt.get_id(region, city, street, building, flat)
-    return jsonify(dt.get_data(dt.load_id(id_req),date_start,date_end,id_req,1))
+    if city == "Город":
+        return jsonify(dt.get_data_region(dt.load_region(region),date_start,date_end))
+    else:
+        id_req = dt.get_id(region, city, street, building, flat)
+        return jsonify(dt.get_data(dt.load_id(id_req),date_start,date_end,id_req,1))
 
 @app.route('/time', methods = ['GET'])
 def time():

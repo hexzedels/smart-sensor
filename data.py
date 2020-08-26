@@ -41,6 +41,9 @@ def get_id(region,city,street,building,flat):
 def load_id(x):
     data = pd.read_csv('csv/main/{}.csv'.format(x))
     return data
+def load_region(x):
+    data = pd.read_csv('csv/regions/{}.csv'.format(x))
+    return data
 '''
 dependepcy codes are in table below
 1: I(time)
@@ -70,7 +73,7 @@ def get_plot_data(data,time_start,time_end,x,dep_code):
           "ys": 20
         }
         temp = temp_time.iloc[i]
-        inner_json['xs'] = str(temp[7])#hardcoded time
+        inner_json['xs'] = str(temp[7])# hardcoded time
         inner_json['ys'] = int(temp[dep_code])
         outer_json['jsonarray'].append(inner_json)
         
@@ -79,6 +82,27 @@ def get_plot_data(data,time_start,time_end,x,dep_code):
     outer_json['labelarray']['xlabelString'] = code_to_labels[dep_code][2]
     return outer_json
 
+def get_plot_data_region(data,time_start,time_end,dep_code):
+    temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)] 
+    outer_json =  {
+   "jsonarray": [],
+    "labelarray":{"label":'',"labelString":'',"xlabelString":''}
+    };     
+
+    for i in range(len(temp_time)):
+        inner_json = {
+          "xs": "2020-02-03",
+          "ys": 20
+        }
+        temp = temp_time.iloc[i]
+        inner_json['xs'] = str(temp[7])# hardcoded time
+        inner_json['ys'] = float(np.round(temp[dep_code],3))# y value
+        outer_json['jsonarray'].append(inner_json)
+        
+    outer_json['labelarray']['label'] = code_to_labels[dep_code][0]
+    outer_json['labelarray']['labelString'] = code_to_labels[dep_code][1]
+    outer_json['labelarray']['xlabelString'] = code_to_labels[dep_code][2]
+    return outer_json
 
 # for data.html visualisation
 def get_data(data, time_start,time_end,x,dep_code):
@@ -97,6 +121,20 @@ def get_data(data, time_start,time_end,x,dep_code):
         outer_json['jsonarray'].append(inner_json)
     return outer_json
 
+def get_data_region(data,time_start,time_end):
+    temp_time = data[(data['timecode'] > time_start) & (data['timecode'] < time_end)]
+    outer_json =  {
+   "jsonarray": []
+    }; 
+
+    for i in range(len(temp_time)):
+        inner_json = {"id": 0, "I": 1.5, "U":3.1, "P":36, "T":1.2, "I_max":3.6, "U_max":36, "timecode": "2020-08-14-19:48"}
+        temp = temp_time.iloc[i]
+        col = temp_time.columns
+        for j in range(len(temp_time.columns)):
+            inner_json[col[j]] = temp[j]
+        outer_json['jsonarray'].append(inner_json)
+    return outer_json
 #Get mean value for every hour of a day
 code_to_labels2 = {1:['Суточная сила тока','I, A','Время, ч'],
                   2:["Суточное напряжение",'U, В','Время, ч'],
@@ -129,4 +167,65 @@ def get_mean(data,x,dep_code):
     outer_json['labelarray']['label'] = code_to_labels2[dep_code][0]
     outer_json['labelarray']['labelString'] = code_to_labels2[dep_code][1]
     outer_json['labelarray']['xlabelString'] = code_to_labels2[dep_code][2]
+    return outer_json
+
+def get_mean_region(data,dep_code):
+    outer_json =  {
+   "jsonarray": [],
+    "labelarray":{"label":'',"labelString":'',"xlabelString":''}
+    };     
+        
+    temp = data
+    temp_list = [[] for z in range(24)]
+    times = [y for y in range(24)]
+    for i in temp['timecode'].tolist():
+        temp_list[int(i[11:13])].append(temp[temp['timecode']==i].iloc[0][dep_code])
+    temp_list = [float(np.round(np.mean(temp_list[z]),3)) for z in range(len(temp_list))]
+    for i in range(len(temp_list)):
+        inner_json = {
+          "xs": "2020-02-03",
+          "ys": 20
+        }
+        inner_json['xs'] = int(times[i])
+        inner_json['ys'] = temp_list[i]
+        outer_json['jsonarray'].append(inner_json)
+
+    outer_json['labelarray']['label'] = code_to_labels2[dep_code][0]
+    outer_json['labelarray']['labelString'] = code_to_labels2[dep_code][1]
+    outer_json['labelarray']['xlabelString'] = code_to_labels2[dep_code][2]
+    return outer_json
+
+code_to_labels3 = {1:['Сила тока','I, A','Температура, °С'],
+                  2:["Напряжение",'U, В','Температура, °С'],
+                  3:['Потребление','P, КВт*час','Температура, °С'],
+                  4:['Температура','T, °С','Температура, °С'],
+                  5:['Max сила тока','I_max, A','Температура, °С'],
+                  6:['Max напряжение','U_max, В','Температура, °С'],
+                 }
+def get_temperature(data,dep_code):
+    outer_json =  {
+   "jsonarray": [],
+    "labelarray":{"label":'',"labelString":''}
+    };   
+    temperature = sorted(data['T'].unique().tolist())
+    output = [[[],[]] for t in temperature]
+    k = 0
+    for t in temperature:
+        output[k][0].append(t)
+        temp = data[data['T'] == t]
+        for i in range(len(temp)):
+            temp_temp = temp.iloc[i]
+            output[k][1].append(temp_temp[dep_code])
+        k+=1
+    for j in range(len(output)):
+        inner_json = {
+          "xs": "2020-02-03",
+          "ys": 20
+        }
+        inner_json['xs'] = int(output[j][0][0])
+        inner_json['ys'] = float(np.round(np.mean(output[j][1]),3))
+        outer_json['jsonarray'].append(inner_json)
+    outer_json['labelarray']['label'] = code_to_labels3[dep_code][0]
+    outer_json['labelarray']['labelString'] = code_to_labels3[dep_code][1]
+    outer_json['labelarray']['xlabelString'] = code_to_labels3[dep_code][2]
     return outer_json
