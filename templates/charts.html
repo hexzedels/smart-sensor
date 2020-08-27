@@ -20,8 +20,8 @@
     <ul>
     <li><a href= "{{url_for('profile')}}" class="button">Профиль</a></li>
     <li><a href= "{{url_for('data')}}" class="button">Данные</a></li>
-    <li><a href= "{{url_for('charts')}}" class="button">Графики</a></li>
-    <li><c href= "{{url_for('analysis')}}" class="button">Анализ</c></li>
+    <li><c href= "{{url_for('charts')}}" class="button">Графики</c></li>
+    <li><a href= "{{url_for('analysis')}}" class="button">Анализ</a></li>
     <li><a href= "{{url_for('payment')}}" class="button">Оплата</a></li>
     <li><a href= "{{url_for('notifications')}}" class="button">Уведомления</a></li>
     </ul>
@@ -60,11 +60,31 @@
   <br><br>
   <label for=proglang>Начало:</label>
   <input type="text" name="flatpick" id="flatpickr"></input>
+  <label for=proglang>Конец:</label>
+  <input type="text" name="flatpick1" id="flatpickr1"></input>
         <br><br>
+    <select style="display: none;" id="typee" name="typee">
+    <option value="1">Фактическая</option>
+    <option value="2">Суточная</option>
+  </select>
+  <label style="display: none;" id="depend" for=proglang>зависимость </label>
+    <select style="display: none;" id="dep" name="dep">
+    <option value="1">Тока</option>
+    <option value="2">Напряжения</option>
+    <option value="3">Потребления</option>
+    <option value="4">Температуры</option>
+    <option value="5">Max тока</option>
+    <option value="6">Max напряжения</option>
+  </select>
+   <label style="display: none;" id="depend_val" for=proglang>от </label>
+    <select style="display: none;" id="dep_value" name="dep_value">
+    <option value="0">Времени</option>
+    <option value="1">Температуры</option>
+  </select>
   </div>
     <br><br>
     <form>
-  	<a href=# id=process_input style="text-decoration:none;"><button style ="margin-bottom:5px;" class="other_buttons">Показать</button></a>
+  	<a href=# id=process_input style="text-decoration:none;"><button class="other_buttons">Показать</button></a>
 	</form>
 <canvas id="canvas"></canvas>
 </div>
@@ -73,12 +93,19 @@
 <script>
 calendar = flatpickr('#flatpickr', {
     enableTime: true,
-    dateFormat: "Y-m-d H:i:ss",
+    dateFormat: "Y-m-d H:i",
     locale: "ru",
-    minDate: "2020-02-01",
-    maxDate: "2020-08-31",
+    minDate: "2020-08-22",
+    maxDate: "2020-08-25",
+});
+calendar1 = flatpickr('#flatpickr1', {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    locale: "ru",
+    minDate: "2020-08-22",
+    maxDate: "2020-08-25",
 });
 </script>
-<script src="/static/JS/analysis.js"></script>
+<script src="/static/JS/plot.js"></script>
 </body>
 </html>

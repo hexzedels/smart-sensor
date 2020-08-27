@@ -1,7 +1,4 @@
 from flask import Flask, render_template, url_for, request, jsonify
-import matplotlib.pyplot as plt
-import io
-import base64
 import pandas as pd
 import numpy as np
 import data as dt
@@ -52,31 +49,10 @@ def postJSON():
     #dt.html_update(response)
     return 'Recieved'
 
-@app.route('/plot')
-def build_plot():
-    data = pd.read_csv('s_data.csv')
-    img = io.BytesIO()
-    
-    y = np.random.randint(1,25,6)
-    x = [0,1,2,3,4,5]
-    plt.plot(x,y)
-    plt.savefig(img, format = 'png')
-    img.seek(0)
-    
-    plot_url = base64.b64encode(img.getvalue()).decode()
-
-    return '<img src="data:imy/png;base64,{}">'.format(plot_url)
-@app.route('/dat', methods = ['GET'])
-def show_table():
-    data = pd.read_csv('s_data.csv')
-    dataset = []
-    for i in range(len(data)):
-        temp = []
-        for x in data.iloc[i]:
-            temp.append(x)
-        dataset.append(temp)
-        
-    return render_template("s_data.html",dataset = dataset)
+@app.route('/charts')
+def charts():
+    dataset = dt.data_to_analysis
+    return render_template("charts.html",data = dataset)
 
 @app.route('/background_plot')#This page accessable only for js script
 def background_process():
@@ -84,17 +60,14 @@ def background_process():
     date_end = request.args.get('date_end', 0, type= str)
     region = request.args.get('region', 0, type= int)
     city = request.args.get('city', 0, type= str)
-    #app.logger.info(city)
     street = request.args.get('street', 0, type= str)
     building = request.args.get('building', 0, type= int)
     flat = request.args.get('flat', 0, type= int)
     dep = int(request.args.get('dep', 0, type= int))
     dep_value = int(request.args.get('dep_value', 0, type= int))
     typee = request.args.get('typee', 0, type= int)
-    #app.logger.info(typee)
     if dep_value == 1:
         id_req = dt.get_id(region, city, street, building, flat)
-        #app.logger.info(id_req)
         return jsonify(dt.get_temperature(dt.load_id(id_req),dep))
     else:
         if typee == 2:
@@ -122,7 +95,11 @@ def select():
     else:
         cities = regions_cities[region]
         return jsonify(city = cities)
-    
+@app.route('/background_analysis', methods = ['GET'])   
+def do_analysis():
+    date_start = request.args.get('date_start', 0, type= str)
+    output = {'y': ['6', '1', '2'], 'x1': [1, 2], 'x2': [1, 2,5, 4]}
+    return jsonify(dt.get_neural(date_start))
 @app.route('/background_data', methods = ['GET'])
 def bg_data():   
     date_start = request.args.get('date_start', 0, type= str)

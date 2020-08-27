@@ -1,5 +1,11 @@
 import pandas as pd
 import numpy as np
+import datetime
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.optimizers import Adam
+from tensorflow import keras
+data2 = pd.read_csv('csv/Sochi_new.csv')
 data_reg = pd.read_csv('csv/Id_and_address.csv')
 regions_cities = {
     0: ['Город'],
@@ -228,4 +234,58 @@ def get_temperature(data,dep_code):
     outer_json['labelarray']['label'] = code_to_labels3[dep_code][0]
     outer_json['labelarray']['labelString'] = code_to_labels3[dep_code][1]
     outer_json['labelarray']['xlabelString'] = code_to_labels3[dep_code][2]
+    return outer_json
+def load_model():
+    global model13 
+    model13 = Sequential() # 
+    model13.add(Dense(units = 20,activation='relu', input_dim = 20 ))
+    model13.add(Dense(units = 20,activation='relu'))
+    model13.add(Dense(units = 25,activation='relu'))
+    model13.add(Dense(units = 25,activation='relu'))
+    model13.add(Dense(units = 20,activation='relu'))
+    model13.add(Dense(units = 4,activation='sigmoid'))
+    model13.compile(loss='mean_squared_error',
+                  optimizer=Adam(lr=0.0009))
+    model13.summary()
+
+    model13 = keras.models.load_model("model13((20)-20-20-25-25-20-Adam-lr00065).h5")
+def predict(start_hour):
+    start = datetime.datetime.strptime(data2[(data2['datetime'] == start_hour)].iloc[0][0],'%Y-%m-%d %H:%M:%S')
+    temp_data = data2[(data2['datetime'] >= start_hour)&(data2['datetime'] <= datetime.datetime.strftime(start+ datetime.timedelta(hours = 5),'%Y-%m-%d %H:%M:%S'))]
+    output = []
+    for i in range(5):
+        temp_temp = temp_data.iloc[i]
+        output.append(datetime.datetime.strptime(str(temp_temp[0]),'%Y-%m-%d %H:%M:%S').hour)
+        for x in range(1,4):
+            output.append(temp_temp[x])
+    return output
+def normalise(pre_predict):
+    codes = np.load('codes.npy').tolist()
+    codes_for_codes = []
+    
+    for x in range(5):
+        codes_for_codes.extend([i for i in range(1,5)])
+    temp = []
+    for i in range(len(pre_predict)):
+        temp.append((pre_predict[i]-codes[codes_for_codes[i]][0])/(codes[codes_for_codes[i]][1]-codes[codes_for_codes[i]][0]))
+    return temp
+def unnormalize(predict):
+    codes = np.load('codes.npy').tolist()
+    temp = []
+    for i in range(len(predict)):
+        temp.append(predict[i]*(codes[i+1][1]-codes[i+1][0])+codes[i+1][0])
+    return temp
+def get_neural(time_start):
+    load_model()
+    outer_json ={"y":[],"x1":[],"x2":[]} 
+    indx = data2[data2['datetime'] == time_start].index[0]
+    times = []
+    for x in range(indx,indx+24):
+        temp_temp = data2.iloc[x]
+        outer_json['x1'].append(int(temp_temp[3]))
+        times.append(temp_temp[0])
+    outer_json['y'].extend([int(time[11:13]) for time in times])
+    outer_json['x2'].extend(outer_json['x1'][:5])
+    for time in times[:-5]:
+        outer_json['x2'].append(float(np.round(unnormalize(model13.predict(np.array([normalise(predict(time))]))[0])[3],2)))
     return outer_json
